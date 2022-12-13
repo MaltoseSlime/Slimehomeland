@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>無標題文件</title>
+</head>
+
+<body style="background-color: #A6B3A5">
+	<div id="box" style="width:800px; height:400px; background-color: #8B988C; margin:0px auto;position: relative;　top: 50px">
+	<img id="sus" src="sus.png"  style="position:absolute; width:50px; height:67px; z-index:5;"/>
+	<img id="sus2" src="sus2.png"  style="position:absolute; width:50px; height:67px"/>
+	<img id="hpr" src="hpr.png"  style="position:absolute; width:27px; height:30px"/>	
+	<img id="knife" src="kni.png"  style="position:absolute; width:34px; height:22px;transform: rotate(-45deg);"/>	
+			
+	</div><br>
+
+	<div id="health" style="width:250px; height:10px; background-color:#8E0F11; margin:0px auto;position: absolute;top: 420px;left:45px;z-index:5;"></div>
+	<div id="HB" style="width:300px; height:10px; background-color:#8B988C; margin:0px auto;position: absolute;top: 420px;left:45px;"></div>
+	
+	<script>
+		
+	var pl = document.getElementById("sus");
+	var pc = document.getElementById("sus2");
+	var loc = document.getElementById("box");
+	var hpa = document.getElementById("hpr");
+	var k = document.getElementById("knife");	
+		
+	var l =350;
+	var t =133;
+	var hpbar = document.getElementById("health");	
+	var hp = parseInt(hpbar.style.width);	
+	pl.style.left=l +"px";
+	pl.style.top=t + "px";	
+	
+	var a =450;
+	var b =233;
+	pc.style.left=a +"px";	
+	pc.style.top=b + "px";	
+		
+		
+	var c = 50;
+	var d = 100;
+	hpa.style.left=c +"px";
+	hpa.style.top=d +"px";
+		
+	
+	var e = 600;
+	var f = 200;
+	k.style.left=e +"px";
+	k.style.top=f +"px";	
+		
+		
+	var pl_w =parseInt(pl.style.width);
+	var pl_h =parseInt(pl.style.height);
+	var pc_w =parseInt(pc.style.width);
+	var pc_h =parseInt(pc.style.height);
+	
+		
+	var loc_w=parseInt(loc.style.width);
+	var loc_h =parseInt(loc.style.height);
+		
+	var hp_w =parseInt(hpa.style.width);
+	var hp_h =parseInt(hpa.style.height);	
+	
+	var k_w =parseInt(k.style.width);
+	var k_h =parseInt(k.style.height);	
+		
+	function movement() {
+		
+		
+		if (event.keyCode == 38){t = t - 10;}
+		else if (event.keyCode == 40){t = t + 10;}
+		else if (event.keyCode == 39){l = l + 10;
+									 pl.style.transform = "scaleX(1)";}
+		else if (event.keyCode == 37){l = l - 10;
+									 pl.style.transform = "scaleX(-1)";}	
+        if (l < 0){l = 0;}
+		else if (l > loc_w-pl_w){l = loc_w-pl_w;}
+		else if (t < 0){t = 0;}
+		else if (t > loc_h-pl_h){t = loc_h-pl_h;}
+		pl.style.top=t + "px";
+		pl.style.left=l + "px";
+		hit();
+	}
+		
+		var weaponed=false;
+	function hit(){
+		var pl_l = parseInt(pl.style.left);
+		var pl_r = parseInt(pl.style.left)+pl_w;
+		var pl_t = parseInt(pl.style.top);
+		var pl_b = parseInt(pl.style.top) -pl_h;
+		
+		var hp_l = parseInt(hpa.style.left);
+		var hp_r = parseInt(hpa.style.left)+hp_w;
+		var hp_t = parseInt(hpa.style.top);
+		var hp_b = parseInt(hpa.style.top) -hp_h;
+		
+		var k_l = parseInt(k.style.left);
+		var k_r = parseInt(k.style.left)+k_w;
+		var k_t = parseInt(k.style.top);
+		var k_b = parseInt(k.style.top) -k_h;
+		
+		if(pl_r>hp_l && pl_l<hp_r&&pl_t>hp_b&&pl_b<hp_t){
+			
+			c = 0;
+			d=810;
+			
+			hpa.style.top=c + "px";
+			hpa.style.left=d + "px";
+			//pc.style.display = "none";
+			hp=hp +40;
+			if(hp >= 300){hp = 300;}
+			else if(hp <= 0){hp = 0;}
+			hpbar.style.width=hp +"px";		
+		
+		}
+		
+		if(pl_r>k_l && pl_l<k_r&&pl_t>k_b&&pl_b<k_t)
+		{ e = 30;
+		f=810;
+		k.style.top=e + "px";
+		k.style.left=f + "px";
+		 weaponed=true;
+		}
+			
+	}
+		
+	document.onkeydown = movement;
+	var n=3;	
+	var isHurt = false;	
+		
+	setInterval( "update()", 30 );
+		function update(){
+		var pl_l = parseInt(pl.style.left);
+		var pl_r = parseInt(pl.style.left)+pl_w;
+		var pl_t = parseInt(pl.style.top);
+		var pl_b = parseInt(pl.style.top) -pl_h;	
+		
+		var pc_l = parseInt(pc.style.left);
+		var pc_r = parseInt(pc.style.left)+pc_w;
+		var pc_t = parseInt(pc.style.top);
+		var pc_b = parseInt(pc.style.top) -pc_h;
+		if(pl_r>pc_l && pl_l<pc_r&&pl_t>pc_b&&pl_b<pc_t)	
+		{
+	if ( isHurt == false&&weaponed == false ){
+　　hp = hp - 40;
+　　if ( hp <= 0 ){　hp = 0;　}
+　　hpbar.style.width = hp + "px"　
+   isHurt = true;}
+   if(weaponed == true)
+	{pc.src="sus3.png";
+		  n=0;}
+		}
+   else {isHurt = false;}　　
+			
+		a=a+n;
+		if (a < 0){a = 0;}
+		else if (a > loc_w-pc_w){a = loc_w-pc_w;}
+		else if (b < 0){b = 0;}
+		else if (b > loc_h-pc_h){b = loc_h-pc_h;}
+			if(a > 600){
+				n=n*-1;
+				pc.style.transform = "scaleX(-1)"}
+			else if (a < 100){
+				n=n*-1;
+				pc.style.transform = "scaleX(1)"}
+			pc.style.left=a+"px";
+			
+		}
+		
+	</script>
+</body>
+</html>
